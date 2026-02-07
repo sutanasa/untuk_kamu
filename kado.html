@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pilih Nasib 🎁</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  font-family:'Segoe UI',Arial,Helvetica,sans-serif;
+}
+body{
+  margin:0;
+  width:100vw;
+  height:100vh;
+  background:radial-gradient(circle at bottom,#1a0033,#3e1919);
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+}
+
+/* ===== START ===== */
+#start{
+  text-align:center;
+  animation:fadeIn 1s ease;
+}
+#start h1{
+  font-size:40px;
+  margin-bottom:20px;
+}
+.kado{
+  display:flex;
+  gap:30px;
+  justify-content:center;
+}
+.kado a{
+  font-size:72px;
+  text-decoration:none;
+  animation:pulse 1.4s infinite;
+  filter:drop-shadow(0 0 18px #ff7bd5);
+}
+.kado a:hover{
+  transform:scale(1.2);
+}
+#hint{
+  margin-top:15px;
+  font-size:14px;
+  opacity:.7;
+}
+
+/* ===== RESULT ===== */
+#result{
+  display:none;
+  text-align:center;
+  animation:fadeIn 1.2s ease;
+}
+#result h2{
+  font-size:38px;
+}
+#result p{
+  font-size:18px;
+  opacity:.85;
+}
+
+/* ===== ANIM ===== */
+@keyframes pulse{
+  0%{transform:scale(1)}
+  50%{transform:scale(1.15)}
+  100%{transform:scale(1)}
+}
+@keyframes fadeIn{
+  from{opacity:0; transform:scale(.9)}
+  to{opacity:1; transform:scale(1)}
+}
+</style>
+</head>
+
+<body>
+
+<!-- START -->
+<div id="start">
+  <h1>Pilih Satu Kado 🎁</h1>
+
+  <div class="kado">
+    <a href="cake.html" title="">🎁</a>
+    <a href="foto.html" title="">🎁</a>
+    <a href="Flowers-HTML-CSS-main/flower.html" title="">🎁</a>
+  </div>
+
+  <div id="hint">Nasib tidak bisa dipilih ulang 😏</div>
+</div>
+
+<!-- RESULT -->
+<div id="result">
+  <h2 id="judul"></h2>
+  <p id="pesan"></p>
+  <br>
+  <a href="?" style="color:#ffb3ff;text-decoration:none">🔁 Coba lagi</a>
+</div>
+
+<audio id="bgm" loop>
+  <source src="voice/a.mp3"audio/mpeg">
+</audio>
+
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const nasib = params.get("nasib");
+
+const start  = document.getElementById("start");
+const result = document.getElementById("result");
+const judul  = document.getElementById("judul");
+const pesan  = document.getElementById("pesan");
+
+
+</script>
+<script>
+const bgm = document.getElementById("bgm");
+
+document.querySelectorAll(".kado a").forEach(link=>{
+  link.addEventListener("click", e=>{
+    bgm.volume = 0.6;
+    bgm.play();
+  });
+});
+</script>
+
+</body>
+</html>

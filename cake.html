@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Make a Wish 🎂</title>
+
+<style>
+*{box-sizing:border-box;font-family:Inter,system-ui}
+body{
+  margin:0;height:100vh;
+  display:flex;justify-content:center;align-items:center;
+  background:radial-gradient(circle at bottom,#1a0033,#3e1919);
+  overflow:hidden;
+}
+
+/* SCENE DROP */
+.scene{
+  transform:translateY(-120%);
+  animation:drop 1.2s ease-out forwards;
+}
+@keyframes drop{to{transform:translateY(0)}}
+
+/* CAKE */
+.cake{position:relative;width:360px}
+.plate{height:8px;background:#ffffffaa;border-radius:6px;margin-top:8px}
+.layer{height:50px;background:#f39ab2}
+.layer.mid{background:#f5a9be}
+.layer.top{background:#f8b7c9}
+
+/* ICING */
+.icing{
+  height:38px;background:#ffd9e5;
+  border-radius:18px 18px 0 0;
+  position:relative;overflow:hidden;
+}
+.icing::after{
+  content:"";
+  position:absolute;left:0;right:0;top:28px;height:60px;
+  background:
+    radial-gradient(circle at 10% 0,#ffd9e5 22px,transparent 23px),
+    radial-gradient(circle at 30% 0,#ffd9e5 30px,transparent 31px),
+    radial-gradient(circle at 50% 0,#ffd9e5 24px,transparent 25px),
+    radial-gradient(circle at 70% 0,#ffd9e5 32px,transparent 33px),
+    radial-gradient(circle at 90% 0,#ffd9e5 20px,transparent 21px);
+}
+
+/* CANDLES */
+.candles{
+  position:absolute;top:-58px;left:50%;
+  bottom: 10px;
+  transform:translateX(-50%);
+  display:flex;gap:58px;
+}
+.candle{
+  width:10px;height:60px;
+  background:#fff;border-radius:4px;
+  position:relative;
+}
+.candle::after{
+  content:"";position:absolute;top:18px;
+  width:100%;height:6px;background:#ff7aa2;
+}
+
+/* FLAME */
+.flame{
+  position:absolute;top:-28px;left:-10px;
+  width:30px;height:40px;
+}
+.flame span{
+  position:absolute;
+  width:22px;height:34px;
+  border-radius:50%;
+  background:radial-gradient(circle,#fff 0%,#ffd000 35%,#ff7b00 65%,#ff2d00 100%);
+  transform-origin:50% 90%;
+  animation:flicker .12s infinite alternate;
+}
+.flame span:nth-child(2){transform:scale(.8);opacity:.7}
+.flame span:nth-child(3){transform:scale(.6);opacity:.5}
+.flame.off{opacity:0}
+@keyframes flicker{
+  from{transform:rotate(-6deg) scaleY(1)}
+  to{transform:rotate(6deg) scaleY(1.25)}
+}
+
+/* SMOKE */
+.smoke{
+  position:absolute;top:-20px;left:-16px;
+  width:40px;height:40px;
+  background:#fff;border-radius:50%;
+  filter:blur(10px);
+  opacity:0;
+}
+.smoke.on{animation:smoke 2s ease-out}
+@keyframes smoke{
+  0%{opacity:0;transform:translateY(0) scale(.6)}
+  30%{opacity:.6}
+  100%{opacity:0;transform:translateY(-90px) scale(2)}
+}
+
+/* NEON TITLE */
+.title{
+  position:fixed;
+  top:42%;left:50%;
+  transform:translate(-50%,-50%) scale(.6);
+  font-size:54px;
+  font-weight:900;
+  letter-spacing:4px;
+  color:#fff;
+  opacity:0;
+  z-index:10;
+  text-shadow:
+    0 0 8px #fff,
+    0 0 20px #ff9adf,
+    0 0 60px #ff3fa4,
+    0 0 120px #ff2d95;
+}
+.title::after{
+  content:attr(data-text);
+  position:absolute;inset:0;
+  color:#ff4fb3;
+  filter:blur(40px);
+  opacity:.9;
+  z-index:-1;
+}
+.title.show{
+  opacity:1;
+  animation:neonPop 1.2s cubic-bezier(.2,1.4,.4,1) forwards,
+           neonAmbient 3s ease-in-out infinite 1.2s;
+}
+@keyframes neonPop{
+  0%{transform:translate(-50%,-50%) scale(.4)}
+  60%{transform:translate(-50%,-50%) scale(1.15)}
+  100%{transform:translate(-50%,-50%) scale(1)}
+}
+@keyframes neonAmbient{
+  0%,100%{
+    text-shadow:0 0 10px #fff,0 0 30px #ff9adf,0 0 80px #ff3fa4,0 0 160px #ff2d95;
+  }
+  50%{
+    text-shadow:0 0 16px #fff,0 0 50px #ffd1ec,0 0 120px #ff77c6,0 0 220px #ff2d95;
+  }
+}
+
+/* NAME */
+.name{
+  position:fixed;
+  top:48%;left:50%;
+  transform:translateX(-50%);
+  font-size:52px;
+  font-weight:800;
+  letter-spacing:9px;
+  z-index:10;
+  margin-top:-20px;  /* ⬅️ tambah minus biar naik */
+
+}
+.name span{
+  opacity:0;
+  transform:translateY(20px) scale(.8);
+  display:inline-block;
+  color:#fff;
+  position:relative;
+  text-shadow:0 0 10px #fff,0 0 40px #ffd166;
+  animation:letterIn .6s ease forwards,
+           letterGlow 2.8s ease-in-out infinite .6s;
+}
+.name span::after{
+  content:attr(data-char);
+  position:absolute;inset:0;
+  animation: rgbText 4s linear infinite;
+  filter:blur(24px);
+  opacity:.9;
+  z-index:-1;
+}
+@keyframes letterIn{
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+@keyframes letterGlow{
+  0%,100%{text-shadow:0 0 10px #fff,0 0 40px #ffd166}
+  50%{text-shadow:0 0 18px #fff,0 0 90px #ffb703}
+}
+@keyframes rgbText{
+  0%   {color:red}
+  16%  {color:orange}
+  33%  {color:yellow}
+  50%  {color:lime}
+  66%  {color:cyan}
+  83%  {color:magenta}
+  100% {color:red}
+}
+
+
+/* FIREWORK CONFETTI */
+.firework{
+  position:fixed;
+  width:8px;height:14px;
+  border-radius:2px;
+  animation:firework 1.8s ease-out forwards;
+}
+@keyframes firework{
+  to{
+    transform:translate(var(--x),var(--y)) rotate(720deg);
+    opacity:0;
+  }
+}
+
+.hint{margin-top:28px;color:#fff;text-align:center}
+</style>
+</head>
+
+<body>
+
+<div class="scene">
+  <div class="cake">
+    <div class="candles">
+      <div class="candle"><div class="flame"><span></span><span></span><span></span></div><div class="smoke"></div></div>
+      <div class="candle"><div class="flame"><span></span><span></span><span></span></div><div class="smoke"></div></div>
+      <div class="candle"><div class="flame"><span></span><span></span><span></span></div><div class="smoke"></div></div>
+      <div class="candle"><div class="flame"><span></span><span></span><span></span></div><div class="smoke"></div></div>
+      <div class="candle"><div class="flame"><span></span><span></span><span></span></div><div class="smoke"></div></div>
+    </div>
+
+    <div class="icing"></div>
+    <div class="layer top"></div>
+    <div class="layer mid"></div>
+    <div class="layer"></div>
+    <div class="plate"></div>
+  </div>
+  <div class="hint">tiup yang lama 🎤</div>
+</div>
+
+<div class="title" id="title" data-text="HAPPY BIRTHDAY">HAPPY BIRTHDAY</div>
+<div class="name" id="name"></div>
+
+<script>
+const flames=document.querySelectorAll(".flame");
+const smokes=document.querySelectorAll(".smoke");
+const title=document.getElementById("title");
+const nameBox=document.getElementById("name");
+const personName="Aisyah Azzahra";
+
+let blown=false,power=0;
+
+navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+  const ctx=new AudioContext();
+  const mic=ctx.createMediaStreamSource(stream);
+  const analyser=ctx.createAnalyser();
+  analyser.fftSize=256;
+  mic.connect(analyser);
+  const data=new Uint8Array(analyser.frequencyBinCount);
+
+  function listen(){
+    if(blown) return;
+    analyser.getByteFrequencyData(data);
+    const vol=data.reduce((a,b)=>a+b)/data.length;
+
+    flames.forEach(f=>{
+      f.style.transform=`scale(${1+vol/120}) rotate(${(Math.random()-.5)*10}deg)`;
+    });
+
+    // harus tiup cukup kenceng baru dihitung
+    if(vol > 15){
+      power += vol * 0.6;   // power naik lebih lambat
+    }else{
+      power = Math.max(0, power - 15); // berhenti dikit, power turun
+    }
+
+    // syarat padam: keras + lama
+    if(vol > 45 && power > 3200){
+      blown=true;
+      flames.forEach(f=>f.classList.add("off"));
+      smokes.forEach(s=>s.classList.add("on"));
+      title.classList.add("show");
+      showName();
+
+      [0,400,800,1200].forEach(d=>{
+        setTimeout(()=>fireworkBurst(160+vol*3),d);
+      });
+    }
+    requestAnimationFrame(listen);
+  }
+  listen();
+});
+
+function fireworkBurst(count){
+  for(let i=0;i<count;i++){
+    const p=document.createElement("div");
+    p.className="firework";
+    const x=Math.random()*innerWidth;
+    const y=Math.random()*innerHeight*0.6;
+    p.style.left=x+"px";
+    p.style.top=y+"px";
+    const a=Math.random()*Math.PI*2;
+    const d=Math.random()*500+200;
+    p.style.setProperty("--x",Math.cos(a)*d+"px");
+    p.style.setProperty("--y",Math.sin(a)*d+"px");
+    p.style.background=`hsl(${Math.random()*360},90%,65%)`;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),2000);
+  }
+}
+
+function showName(){
+  [...personName].forEach((c,i)=>{
+    const s=document.createElement("span");
+    s.textContent=c;
+    s.setAttribute("data-char",c);
+    s.style.animationDelay=i*0.15+"s";
+    nameBox.appendChild(s);
+  });
+}
+</script>
+
+</body>
+</html>
