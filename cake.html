@@ -266,7 +266,7 @@ navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
     }
 
     // syarat padam: keras + lama
-    if(vol > 45 && power > 3200){
+    if(vol > 35 && power > 2500){
       blown=true;
       flames.forEach(f=>f.classList.add("off"));
       smokes.forEach(s=>s.classList.add("on"));
@@ -313,3 +313,4 @@ function showName(){
 
 </body>
 </html>
+
