@@ -226,7 +226,7 @@ body{
     <div class="layer"></div>
     <div class="plate"></div>
   </div>
-  <div class="hint">tiup yang lama 🎤</div>
+  <div class="hint">tiup yang kuat 🎤</div>
 </div>
 
 <div class="title" id="title" data-text="HAPPY BIRTHDAY">HAPPY BIRTHDAY</div>
@@ -259,14 +259,10 @@ navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
     });
 
     // harus tiup cukup kenceng baru dihitung
-    if(vol > 15){
-      power += vol * 0.6;   // power naik lebih lambat
-    }else{
-      power = Math.max(0, power - 15); // berhenti dikit, power turun
-    }
+    if (vol > -20) power += vol * 0.9;
 
-    // syarat padam: keras + lama
-    if(vol > 35 && power > 2500){
+    
+   if (vol > 35 && power > 2200){
       blown=true;
       flames.forEach(f=>f.classList.add("off"));
       smokes.forEach(s=>s.classList.add("on"));
@@ -313,4 +309,5 @@ function showName(){
 
 </body>
 </html>
+
 
